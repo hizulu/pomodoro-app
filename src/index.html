@@ -28,8 +28,8 @@
         }
         /* Dark and light mode styles */
         .dark-mode {
-            background-color: #19543c;
-            color: #dee9e2;
+            background-color: #004d47;
+            color: #e5eeed;
         }
         .light-mode {
             background-color: #ffc2ef;
@@ -41,17 +41,15 @@
   <!--modo-oscuro pantalla-completa contenedor-flex-vertical-->
     <body class="dark-mode min-h-screen flex flex-col">
 
-      <!-- Contenedor principal de la página -->
-      <div class="container mx-auto px-4 py-8 flex-1 flex flex-col">
-
-        <!-- Cabecera con el título y botón de tema -->
-        <header class="flex justify-between items-center mb-8">
-          
-          <!-- Título principal -->
-          <h1 class="text-3xl font-bold text-indigo-500">ElectroPomodoro</h1>
-          
-          <!-- Botón para alternar tema oscuro/claro -->
-          <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+<!-- Contenedor principal de la página -->
+<div class="container mx-auto px-4 py-8 flex-1 flex flex-col">
+    <!-- Cabecera con el título y botón de tema -->
+    <header class="flex items-center mb-8">
+        <!-- Título principal -->
+        <h1 class="flex-grow text-4xl font-bold text-pink-500">Pomodoro 💖</h1>
+        <!-- Contenedor para el botón de alternar tema -->
+        <div class="ml-4">
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">            
 
             <!-- Icono del botón: sol/luna -->
              <!-- Un SVG es un contenedor para gráficos vectoriales en XML -->
@@ -66,43 +64,78 @@
 
         </header>
 
-          <!-- Timer Display -->
+        <!-- Timer Display -->
             <div class="flex flex-col items-center mb-8">
 
                 <!-- Progress Ring -->
                 <div class="relative w-64 h-64 mb-6">
                     <svg class="w-full h-full" viewBox="0 0 100 100">
                         <circle cx="50" cy="50" r="45" stroke="#e2e8f0" stroke-width="8" fill="transparent" />
-                        <circle id="progress-circle" class="progress-ring__circle" cx="50" cy="50" r="45" stroke="#4f46e5" stroke-width="8" fill="transparent" stroke-dasharray="283" stroke-dashoffset="283" />
+                        <circle id="progress-circle" class="progress-ring__circle" cx="50" cy="50" r="45" stroke="#EC4899" stroke-width="8" fill="transparent" stroke-dasharray="283" stroke-dashoffset="283" />
                     </svg>
                     <!-- Tiempo y "Trabajo" -->
                     <div class="absolute inset-0 flex items-center justify-center flex-col">
                         <div id="time-display" class="text-5xl font-mono font-bold mb-2">25:00</div>
-                        <div id="timer-state" class="text-lg font-semibold">Trabajo</div>
+                        <div id="timer-state" class="text-lg font-semibold">Trabajando...</div>
                     </div>
                 </div>
 
-          <!-- Timer Controls -->
+        <!-- Timer Controls -->
             <div class="flex space-x-4 mb-8">
                 <!-- Botones de control del temporizador -->
                 <!-- Boton de inicio -->
-                <button id="start-btn" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-lg transition-colors">
+                <button id="start-btn" class="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-lg shadow-lg transition-colors">
                     Comenzar
                 </button>
 
                 <!-- Boton de pausa -->
-                <button id="pause-btn" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-lg shadow-lg transition-colors hidden">
+                <button id="pause-btn" class="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-lg shadow-lg transition-colors hidden">
                     Pausar
                 </button>
 
                 <!-- Boton de reinicio -->
-                <button id="reset-btn" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-lg transition-colors">
+                <button id="reset-btn" class="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-lg shadow-lg transition-colors">
                     Reiniciar
                 </button>
             </div>
         </div>
 
-          <!-- Timer Settings -->
+        <!-- Task List -->
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-lg flex-1">
+                <h2 class="text-xl font-semibold mb-4">Lista de Tareas</h2>
+                <div class="flex mb-4">
+                    <input type="text" id="new-task" placeholder="Agregar una nueva tarea..." class="flex-1 p-2 border rounded-l dark:bg-gray-700 dark:border-gray-600">
+                    <button id="add-task" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-r">
+                        Agregar
+                    </button>
+                </div>
+                <ul id="task-list" class="space-y-2">
+                    <!-- Tasks will be added here -->
+                </ul>
+            </div>
+            
+        <!-- Pomodoro Counter -->
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">Progreso</h2>
+                <div class="flex items-center justify-between">
+                    <div class="text-center">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Pomodoros Completados</div>
+                        <div id="pomodoro-count" class="text-3xl font-bold">0</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <div class="w-6 h-6 rounded-full bg-pink-500"></div>
+                        <div class="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                        <div class="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                        <div class="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Ciclo Actual</div>
+                        <div id="cycle-count" class="text-3xl font-bold">1/4</div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Timer Settings -->
           <!-- Configuración del temporizador -->
           <!-- Esta sección permite al usuario ajustar la duración del trabajo y los descansos -->
             <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-lg">
@@ -122,46 +155,10 @@
                     </div>
                 </div>
             </div>
-            
-          <!-- Pomodoro Counter -->
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-lg">
-                <h2 class="text-xl font-semibold mb-4">Progreso</h2>
-                <div class="flex items-center justify-between">
-                    <div class="text-center">
-                        <div class="text-sm text-gray-500 dark:text-gray-400">Pomodoros Completados</div>
-                        <div id="pomodoro-count" class="text-3xl font-bold">0</div>
-                    </div>
-                    <div class="flex space-x-2">
-                        <div class="w-6 h-6 rounded-full bg-indigo-500"></div>
-                        <div class="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-                        <div class="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-                        <div class="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-sm text-gray-500 dark:text-gray-400">Ciclo Actual</div>
-                        <div id="cycle-count" class="text-3xl font-bold">1/4</div>
-                    </div>
-                </div>
-            </div>
-
-          <!-- Task List -->
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 shadow-lg flex-1">
-                <h2 class="text-xl font-semibold mb-4">Lista de Tareas</h2>
-                <div class="flex mb-4">
-                    <input type="text" id="new-task" placeholder="Agregar nueva tarea..." class="flex-1 p-2 border rounded-l dark:bg-gray-700 dark:border-gray-600">
-                    <button id="add-task" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-r">
-                        Agregar
-                    </button>
-                </div>
-                <ul id="task-list" class="space-y-2">
-                    <!-- Tasks will be added here -->
-                </ul>
-            </div>
-        </div>  
 
         <!-- Pie de pagina -->
         <footer class="text-center py-4 text-gray-500 dark:text-gray-400">
-            ElectroPomodoro - Técnica de productividad con Electron
+            Pomodoro 💖 - <span class="italic">by Hizu</span>
         </footer>
         
         <!-- Link to the external JavaScript file -->

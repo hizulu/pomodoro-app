@@ -32,6 +32,16 @@ updatePomodoroCounter();
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     document.body.classList.toggle('light-mode');
+    
+    // Cambiar el icono del botón de alternar tema
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    themeToggle.innerHTML = isDarkMode ? 
+        `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>` : 
+        `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>`;
 });
 
 // Timer Button Event Listeners
@@ -159,10 +169,11 @@ function updatePomodoroCounter() {
     pomodoroIndicators.forEach((indicator, index) => {
         if (index < pomodorosCompleted) {
             indicator.classList.remove('bg-gray-300', 'bg-gray-600');
-            indicator.classList.add('bg-indigo-500');
+            indicator.classList.add('bg-pink-500');
         } else {
-            indicator.classList.remove('bg-indigo-500');
+            indicator.classList.remove('bg-pink-500');
             indicator.classList.add(document.body.classList.contains('dark-mode') ? 'bg-gray-600' : 'bg-gray-300');
+            indicator.classList.add(document.body.classList.contains('light-mode') ? 'dark:bg-gray-600' : 'bg-gray-300');
         }
     });
     
@@ -195,10 +206,16 @@ function addNewTask() {
     if (taskText) {
         const taskItem = document.createElement('li');
         taskItem.className = 'flex items-center justify-between p-2 bg-white dark:bg-gray-700 rounded shadow';
+        taskItem.setAttribute('draggable', 'true'); // Hacer el elemento arrastrable
         
         taskItem.innerHTML = `
-            <span>${taskText}</span>
-            <button class="p-1 text-red-500 hover:text-red-700">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <span>${taskText}</span>
+            </div>
+            <button class="p-1 text-pink-500 hover:text-pink-700">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                 </svg>
@@ -209,7 +226,37 @@ function addNewTask() {
         deleteBtn.addEventListener('click', () => {
             taskList.removeChild(taskItem);
         });
-        
+
+        // Eventos de arrastre
+        taskItem.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', taskText);
+            e.dataTransfer.effectAllowed = 'move';
+            taskItem.classList.add('opacity-50'); // Opcional: cambiar la opacidad al arrastrar
+        });
+
+        taskItem.addEventListener('dragend', () => {
+            taskItem.classList.remove('opacity-50'); // Restaurar opacidad
+        });
+
+        taskItem.addEventListener('dragover', (e) => {
+            e.preventDefault(); // Permitir el arrastre
+            e.dataTransfer.dropEffect = 'move';
+        });
+
+        taskItem.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const draggedTaskText = e.dataTransfer.getData('text/plain');
+            const draggedTaskItem = Array.from(taskList.children).find(item => item.textContent.includes(draggedTaskText));
+            if (draggedTaskItem && draggedTaskItem !== taskItem) {
+                // Reordenar las tareas
+                if (e.target === taskItem) {
+                    taskList.insertBefore(draggedTaskItem, taskItem.nextSibling);
+                } else {
+                    taskList.insertBefore(draggedTaskItem, taskItem);
+                }
+            }
+        });
+
         taskList.appendChild(taskItem);
         newTask.value = '';
     }
