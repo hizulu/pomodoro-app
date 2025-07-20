@@ -36,11 +36,14 @@ themeToggle.addEventListener('click', () => {
     // Cambiar el icono del botón de alternar tema
     const isDarkMode = document.body.classList.contains('dark-mode');
     themeToggle.innerHTML = isDarkMode ? 
+        //Sun icon
         `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3 m15.364 6.364l-.707-.707 M6.343 6.343l-.707-.707 m12.728 0l-.707.707 M6.343 17.657l-.707.707 M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>` : 
+
+        //Moon icon
         `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 2.5 A 9.5 9.5 0 1 0 21.5 12 A 7.5 7.5 0 1 1 12 2.5 Z"/>
         </svg>`;
 });
 
@@ -94,7 +97,7 @@ function resetTimer() {
     
     if (isWorkTime) {
         timeLeft = parseInt(workDuration.value) * 60;
-        timerState.textContent = 'Trabajo';
+        timerState.textContent = 'Trabajando...';
     } else {
         timeLeft = pomodorosCompleted === totalCycles - 1 
             ? parseInt(longBreak.value) * 60 
@@ -164,16 +167,15 @@ function updateProgressRing() {
 // Update Pomodoro Counter
 function updatePomodoroCounter() {
     pomodoroCount.textContent = pomodorosCompleted;
-    
-    const pomodoroIndicators = document.querySelectorAll('.bg-gray-300, .bg-gray-600');
+
+    const pomodoroIndicators = document.querySelectorAll('.bg-primary-accent, .bg-secondary-bg');
     pomodoroIndicators.forEach((indicator, index) => {
         if (index < pomodorosCompleted) {
-            indicator.classList.remove('bg-gray-300', 'bg-gray-600');
-            indicator.classList.add('bg-pink-500');
+            indicator.classList.remove('bg-secondary-bg'); // Remover el color de fondo secundario
+            indicator.classList.add('bg-primary-accent'); // Agregar el color de fondo primario
         } else {
-            indicator.classList.remove('bg-pink-500');
-            indicator.classList.add(document.body.classList.contains('dark-mode') ? 'bg-gray-600' : 'bg-gray-300');
-            indicator.classList.add(document.body.classList.contains('light-mode') ? 'dark:bg-gray-600' : 'bg-gray-300');
+            indicator.classList.remove('bg-primary-accent'); // Remover el color de fondo primario
+            indicator.classList.add(document.body.classList.contains('dark-mode') ? 'bg-secondary-bg' : 'bg-primary-accent'); // Agregar el color de fondo según el modo
         }
     });
     
@@ -205,17 +207,17 @@ function addNewTask() {
     const taskText = newTask.value.trim();
     if (taskText) {
         const taskItem = document.createElement('li');
-        taskItem.className = 'flex items-center justify-between p-2 bg-white dark:bg-gray-700 rounded shadow';
+        taskItem.className = 'flex items-center justify-between p-2 bg-[var(--primary-bg)] dark:bg-[var(--secondary-bg)] rounded shadow';
         taskItem.setAttribute('draggable', 'true'); // Hacer el elemento arrastrable
         
         taskItem.innerHTML = `
             <div class="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[var(--secondary-text)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
                 <span>${taskText}</span>
             </div>
-            <button class="p-1 text-pink-500 hover:text-pink-700">
+            <button class="p-1 text-[var(--primary-accent)] hover:text-[var(--primary-accent-hover)]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                 </svg>
