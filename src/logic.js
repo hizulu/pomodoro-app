@@ -1,7 +1,3 @@
-// Electron-specific code
-const { ipcRenderer } = require('electron');
-const { Notification } = require('electron').remote;
-
 // DOM Elements
 const timeDisplay = document.getElementById('time-display');
 const timerState = document.getElementById('timer-state');
@@ -106,30 +102,22 @@ function handleTimerCompletion() {
         pomodorosCompleted++;
         currentCycle = pomodorosCompleted < totalCycles ? currentCycle : 1;
         updatePomodoroCounter();
-        
-        // Show completion notification
+
         showNotification('¡Tiempo de trabajo completado!', 'Es hora de un descanso.');
-        
-        // Switch to break time
         isWorkTime = false;
         timeLeft = pomodorosCompleted === totalCycles 
             ? parseInt(longBreak.value) * 60 
             : parseInt(shortBreak.value) * 60;
         timerState.textContent = pomodorosCompleted === totalCycles ? 'Descanso Largo' : 'Descanso Corto';
-        
-        // Reset cycles if completed all
+
         if (pomodorosCompleted === totalCycles) {
             pomodorosCompleted = 0;
         }
     } else {
-        // Show break completion notification
         showNotification('¡Descanso terminado!', 'De vuelta al trabajo.');
-        
-        // Switch to work time
         isWorkTime = true;
         timeLeft = parseInt(workDuration.value) * 60;
         timerState.textContent = 'Trabajo';
-        
         if (pomodorosCompleted === totalCycles) {
             currentCycle++;
         }
@@ -137,11 +125,8 @@ function handleTimerCompletion() {
     
     updateTimerDisplay();
     updateProgressRing();
-    
-    // Flash notification
     flashTimerState();
-    
-    // Auto-start next timer if running
+
     if (isRunning) {
         setTimeout(startTimer, 1000);
     }
@@ -186,17 +171,14 @@ function updatePomodoroCounter() {
         : `${currentCycle}/4`;
 }
 
-// Show Notification
+// Show Notification using electronAPI
 function showNotification(title, body) {
-    if (Notification.isSupported()) {
-        new Notification({
-            title: title,
-            body: body
-        }).show();
+    if (window.electronAPI?.notify) {
+        window.electronAPI.notify(title, body);
     }
-    
-    // Also focus the window
-    ipcRenderer.send('focus-window');
+    if (window.electronAPI?.sendFocusRequest) {
+        window.electronAPI.sendFocusRequest();
+    }
 }
 
 // Flash Timer State
