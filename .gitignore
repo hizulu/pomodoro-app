@@ -90,3 +90,7 @@ typings/
 
 # Electron-Forge
 out/
+
+# Ignorar builds y ejecutables
+dist/
+*.exe
