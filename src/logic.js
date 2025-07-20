@@ -140,9 +140,10 @@ function handleTimerCompletion() {
     updateProgressRing();
     flashTimerState();
 
-    if (isRunning) {
-        setTimeout(startTimer, 1000);
-    }
+    isRunning = false;
+    startBtn.classList.remove('hidden');
+    pauseBtn.classList.add('hidden');
+
 }
 
 // Update Timer Display
