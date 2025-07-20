@@ -2,7 +2,7 @@
   "name": "pomodoro-app",
   "productName": "pomodoro-app",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "A pomodoro timer application built with Electron",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -29,6 +29,8 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
     "@electron-forge/plugin-fuses": "^7.8.1",
     "@electron/fuses": "^1.8.0",
-    "electron": "37.2.3"
+    "electron": "^37.2.3",
+    "electron-builder": "^26.0.12",
+    "electron-packager": "^17.1.2"
   }
 }

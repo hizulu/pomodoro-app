@@ -17,7 +17,6 @@ const createWindow = () => {
   });
 
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  mainWindow.webContents.openDevTools();
 };
 
 ipcMain.on('notify', (event, { title, body }) => {
