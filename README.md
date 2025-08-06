@@ -22,10 +22,10 @@ A sleek desktop Pomodoro timer application built with [Electron](https://www.ele
 ## 📂 Project Structure
 
 pomodoro-app  
-├── assets
-│   ├── pomodoroIcon.icns
-│   ├── pomodoroIcon.ico
-│   └── pomodoroIcon.png
+├── assets            
+│   ├── pomodoroIcon.icns            
+│   ├── pomodoroIcon.ico            
+│   └── pomodoroIcon.png            
 ├── src  
 │   ├── index.css    
 │   ├── index.html          
