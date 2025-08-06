@@ -24,6 +24,8 @@ let pomodorosCompleted = 0;
 let currentCycle = 1;
 const totalCycles = 4;
 
+timerState.textContent = 'Start Working!';
+
 // Initialize the timer display
 updateTimerDisplay();
 updatePomodoroCounter();
@@ -62,6 +64,14 @@ newTask.addEventListener('keypress', (e) => {
 function startTimer() {
     if (!isRunning) {
         isRunning = true;
+        
+        if (isWorkTime) {
+            timerState.textContent = 'Working...';
+        } else {
+            // Dependiendo del tipo de pausa, mostrar texto correcto
+            timerState.textContent = pomodorosCompleted === totalCycles - 1 ? 'Long Break' : 'Short Break';
+        }
+
         startBtn.classList.add('hidden');
         pauseBtn.classList.remove('hidden');
         
@@ -77,6 +87,7 @@ function startTimer() {
         }, 1000);
     }
 }
+
 
 // Pause Timer Function
 function pauseTimer() {
@@ -97,45 +108,53 @@ function resetTimer() {
     
     if (isWorkTime) {
         timeLeft = parseInt(workDuration.value) * 60;
-        timerState.textContent = 'Trabajando...';
+        timerState.textContent = 'Start Working!';
     } else {
         timeLeft = pomodorosCompleted === totalCycles - 1 
             ? parseInt(longBreak.value) * 60 
             : parseInt(shortBreak.value) * 60;
-        timerState.textContent = pomodorosCompleted === totalCycles - 1 ? 'Descanso Largo' : 'Descanso Corto';
+        timerState.textContent = pomodorosCompleted === totalCycles - 1 ? 'Long Break' : 'Short Break';
     }
     
     updateTimerDisplay();
     updateProgressRing();
 }
 
-// Handle Timer Completion
 function handleTimerCompletion() {
     if (isWorkTime) {
         pomodorosCompleted++;
-        currentCycle = pomodorosCompleted < totalCycles ? currentCycle : 1;
         updatePomodoroCounter();
 
-        showNotification('¡Tiempo de trabajo completado!', 'Es hora de un descanso.');
+        showNotification('Working Time Completed!', 'Time for a break.');
         isWorkTime = false;
-        timeLeft = pomodorosCompleted === totalCycles 
-            ? parseInt(longBreak.value) * 60 
-            : parseInt(shortBreak.value) * 60;
-        timerState.textContent = pomodorosCompleted === totalCycles ? 'Descanso Largo' : 'Descanso Corto';
 
+        // Si ya completaste todos los pomodoros, toca pausa larga
+        if (pomodorosCompleted === totalCycles) {
+            timeLeft = parseInt(longBreak.value) * 60;
+            timerState.textContent = 'Long Break';
+        } else {
+            // Pausa corta
+            timeLeft = parseInt(shortBreak.value) * 60;
+            timerState.textContent = 'Short Break';
+        }
+
+        // Si completaste todos los pomodoros, resetea el contador
         if (pomodorosCompleted === totalCycles) {
             pomodorosCompleted = 0;
         }
     } else {
-        showNotification('¡Descanso terminado!', 'De vuelta al trabajo.');
+        // Termina la pausa
+        showNotification('Break Time Completed!', 'Back to work.');
         isWorkTime = true;
         timeLeft = parseInt(workDuration.value) * 60;
-        timerState.textContent = 'Trabajo';
-        if (pomodorosCompleted === totalCycles) {
+        timerState.textContent = 'Start Working!';
+
+        if (pomodorosCompleted === 0) {
             currentCycle++;
+            if (currentCycle > totalCycles) currentCycle = 1;
         }
     }
-    
+
     updateTimerDisplay();
     updateProgressRing();
     flashTimerState();
@@ -143,7 +162,6 @@ function handleTimerCompletion() {
     isRunning = false;
     startBtn.classList.remove('hidden');
     pauseBtn.classList.add('hidden');
-
 }
 
 // Update Timer Display

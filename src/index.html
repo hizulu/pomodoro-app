@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <!-- Sirve para que se vea bien en dispositivos móviles y tablets -->
@@ -7,6 +7,10 @@
 
     <title>Pomodoro App</title>
     <link rel="stylesheet" href="index.css" />
+
+    <!-- Google Fonts for custom typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Zain&display=swap" rel="stylesheet">
+
 
     <!-- Tailwind CSS CDN is used for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +71,7 @@
     <!-- Cabecera con el título y botón de tema -->
     <header class="flex items-center mb-8">
         <!-- Título principal -->
-        <h1 class="flex-grow text-4xl font-bold text-[var(--primary-text)]">Pomodoro 💖</h1>
+        <h1 class="flex-grow text-5xl font-bold text-[var(--primary-text)]">Pomodoro 💖</h1>
         <!-- Contenedor para el botón de alternar tema -->
         <div class="ml-4">
             <button id="theme-toggle" class="p-2 rounded-full bg-[var(--border-color)]">
@@ -94,8 +98,8 @@
                     </svg>
                     <!-- Tiempo y "Trabajo" -->
                     <div class="absolute inset-0 flex items-center justify-center flex-col">
-                        <div id="time-display" class="text-[var(--secondary-text)] text-5xl font-mono font-bold mb-2">25:00</div>
-                        <div id="timer-state" class="text-[var(--secondary-text)] text-lg font-semibold">Trabajando...</div>
+                        <div id="time-display" class="text-[var(--secondary-text)] text-5xl font-mono font-bold mb-2">workDuration.value</div>
+                        <div id="timer-state" class="text-[var(--secondary-text)] text-lg font-semibold">Start Working!</div>
                     </div>
                 </div>
 
@@ -104,28 +108,28 @@
                 <!-- Botones de control del temporizador -->
                 <!-- Boton de inicio -->
                 <button id="start-btn" class="px-6 py-3 bg-[var(--primary-accent)] hover:bg-[var(--primary-accent-hover)] text-[var(--secondary-text)] font-bold rounded-lg shadow-lg transition-colors">
-                    Comenzar
+                    Start
                 </button>
 
                 <!-- Boton de pausa -->
                 <button id="pause-btn" class="px-6 py-3 bg-[var(--primary-accent)] hover:bg-[var(--primary-accent-hover)] text-[var(--secondary-text)] font-bold rounded-lg shadow-lg transition-colors hidden">
-                    Pausar
+                    Pause
                 </button>
 
                 <!-- Boton de reinicio -->
                 <button id="reset-btn" class="px-6 py-3 bg-[var(--primary-accent)] hover:bg-[var(--primary-accent-hover)] text-[var(--secondary-text)] font-bold rounded-lg shadow-lg transition-colors">
-                    Reiniciar
+                    Reset
                 </button>
             </div>
         </div>
 
        <!-- Task List -->
         <div class="bg-[var(--secondary-bg)] rounded-lg p-6 shadow-lg flex-1 mb-6">
-            <h2 class="text-xl font-semibold mb-4">Lista de Tareas</h2>
+            <h2 class="text-3xl font-semibold mb-4">To Do List</h2>
             <div class="flex mb-4">
-                <input type="text" id="new-task" placeholder="Agregar una nueva tarea..." class="flex-1 p-2 border rounded-l dark:bg-[var(--col-color)] dark:border-[var(--col-color)] text-[var(--secondary-text)]">
+                <input type="text" id="new-task" placeholder="Add a new task..." class="flex-1 p-2 border rounded-l dark:bg-[var(--col-color)] dark:border-[var(--col-color)] text-[var(--secondary-text)]">
                 <button id="add-task" class="px-4 py-2 bg-[var(--primary-accent)] hover:bg-[var(--primary-accent-hover)] text-[var(--secondary-text)] rounded-r">
-                    Agregar
+                    Add Task
                 </button>
             </div>
             <ul id="task-list" class="space-y-2">
@@ -135,10 +139,10 @@
 
         <!-- Pomodoro Counter -->
         <div class="bg-[var(--primary-bg)] dark:bg-[var(--secondary-bg)] rounded-lg p-6 mb-8 shadow-lg">
-            <h2 class="text-xl font-semibold mb-4">Progreso</h2>
+            <h2 class="text-3xl font-semibold mb-4">Progress</h2>
             <div class="flex items-center justify-between">
                 <div class="text-center">
-                    <div class="text-sm text-[var(--secondary-text)]">Pomodoros Completados</div>
+                    <div class="text-sm text-[var(--secondary-text)]">Completed Pomodoros</div>
                     <div id="pomodoro-count" class="text-3xl font-bold">0</div>
                 </div>
                 <!-- Pomodoro Indicators (circles) -->
@@ -149,7 +153,7 @@
                     <div class="w-6 h-6 rounded-full bg-[var(--secondary-accent)]"></div>
                 </div>
                 <div class="text-center">
-                    <div class="text-sm text-[var(--secondary-text)]">Ciclo Actual</div>
+                    <div class="text-sm text-[var(--secondary-text)]">Current Cycle</div>
                     <div id="cycle-count" class="text-3xl font-bold">1/4</div>
                 </div>
             </div>
@@ -157,21 +161,21 @@
 
 
         <!-- Timer Settings -->
-          <!-- Configuración del temporizador -->
-          <!-- Esta sección permite al usuario ajustar la duración del trabajo y los descansos -->
+          <!-- Timer Settings -->
+          <!-- This section allows the user to adjust the work and break durations -->
             <div class="bg-[var(--secondary-bg)] dark:bg-[var(--secondary-bg)] rounded-lg p-6 mb-8 shadow-lg">
-                <h2 class="text-xl font-semibold mb-4">Configuración del Pomodoro</h2>
+                <h2 class="text-3xl font-semibold mb-4">Pomodoro Settings</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label for="work-duration" class="text-[var(--secondary-text)] block mb-2">Duración Trabajo (minutos)</label>
+                        <label for="work-duration" class="text-[var(--secondary-text)] block mb-2">Work Duration (minutes)</label>
                         <input type="number" id="work-duration" min="1" max="60" value="25" class="w-full p-2 border rounded dark:bg-[var(--col-color)] text-[var(--secondary-text)] dark:text-[var(--secondary-text)]">
                     </div>
                     <div>
-                        <label for="short-break" class="text-[var(--secondary-text)] block mb-2">Descanso Corto (minutos)</label>
+                        <label for="short-break" class="text-[var(--secondary-text)] block mb-2">Short Break (minutes)</label>
                         <input type="number" id="short-break" min="1" max="15" value="5" class="w-full p-2 border rounded dark:bg-[var(--col-color)] text-[var(--secondary-text)] dark:text-[var(--secondary-text)]">
                     </div>
                     <div>
-                        <label for="long-break" class="text-[var(--secondary-text)] block mb-2">Descanso Largo (minutos)</label>
+                        <label for="long-break" class="text-[var(--secondary-text)] block mb-2">Long Break (minutes)</label>
                         <input type="number" id="long-break" min="1" max="30" value="15" class="w-full p-2 border rounded dark:bg-[var(--col-color)] text-[var(--secondary-text)] dark:text-[var(--secondary-text)]">
                     </div>
                 </div>

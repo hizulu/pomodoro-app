@@ -7,14 +7,19 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 600,
     height: 600,
+    icon: path.join(__dirname, 'assets', 'pomodoroIcon.png'),
     maximizable: false,
     resizable: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
+
+  mainWindow.removeMenu(); // Elimina el menú
+  mainWindow.setMenuBarVisibility(false); // Oculta el menú incluso en macOS
 
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 };
@@ -37,6 +42,7 @@ if (require('electron-squirrel-startup')) {
 }
 
 app.whenReady().then(() => {
+  app.setName('Pomodoro App');
   createWindow();
 
   app.on('activate', () => {

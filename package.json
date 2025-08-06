@@ -1,7 +1,7 @@
 {
   "name": "pomodoro-app",
-  "productName": "pomodoro-app",
-  "version": "1.0.0",
+  "productName": "Pomodoro App 💖",
+  "version": "1.1.0",
   "description": "A pomodoro timer application built with Electron",
   "main": "src/index.js",
   "scripts": {
@@ -29,8 +29,37 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
     "@electron-forge/plugin-fuses": "^7.8.1",
     "@electron/fuses": "^1.8.0",
-    "electron": "^37.2.3",
-    "electron-builder": "^26.0.12",
-    "electron-packager": "^17.1.2"
+    "electron": "^37.2.3"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "assets/pomodoroIcon"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "platforms": ["win32"],
+          "config": {
+            "name": "pomodoro_app"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": ["darwin"],
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "platforms": ["linux"],
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "platforms": ["linux"],
+          "config": {}
+        }
+      ]
+    }
   }
 }
